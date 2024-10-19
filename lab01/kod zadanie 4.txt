@@ -1,0 +1,23 @@
+import org.opencv.core.Core;  // Importowanie klasy Core z biblioteki OpenCV, potrzebnej do używania funkcji OpenCV
+import org.opencv.core.Mat;   // Importowanie klasy Mat, która reprezentuje macierz (obraz)
+import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.highgui.HighGui;
+import org.opencv.imgproc.Imgproc;
+public class zad1 {
+    public static void main(String[] args) {
+        // Załadowanie biblioteki OpenCV. Dzięki temu możemy korzystać z funkcji OpenCV w naszym programie.
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+
+        String inputImage = "dog.jpg";
+        Mat image = Imgcodecs.imread(inputImage);
+
+        if(image.empty()){
+            System.out.println("Nie udało się wczytać obrazu");
+            return;
+        }
+        Mat gray = new Mat(); //konwersja obrazu do skali szarości
+        Imgproc.cvtColor(image, gray, Imgproc.COLOR_RGB2GRAY);
+        HighGui.imshow("immagine", gray);
+        HighGui.waitKey(0);
+    }
+}

@@ -1,0 +1,167 @@
+import org.opencv.core.Core;         // Importowanie klasy Core z biblioteki OpenCV, która zawiera podstawowe funkcje
+import org.opencv.core.CvType;       // Importowanie klasy CvType do określenia typu danych dla macierzy
+import org.opencv.core.Mat;          // Importowanie klasy Mat, która reprezentuje macierz obrazu
+import org.opencv.core.Size;         // Importowanie klasy Size do określania rozmiaru obrazu
+import org.opencv.imgcodecs.Imgcodecs; // Importowanie klasy Imgcodecs do wczytywania i zapisywania obrazów
+import org.opencv.highgui.HighGui;   // Importowanie klasy HighGui do wyświetlania obrazów
+import org.opencv.imgproc.Imgproc;   // Importowanie klasy Imgproc do przetwarzania obrazów, w tym przekształceń
+
+public class Main {
+    public static void main(String[] args) {
+        // Załadowanie natywnej biblioteki OpenCV
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+
+        // Wczytanie obrazu z pliku "dog.jpg" do obiektu typu Mat (macierzy)
+        Mat image = Imgcodecs.imread("dog.jpg");
+
+        // Sprawdzenie, czy obraz został wczytany prawidłowo
+        if (image.empty()) {
+            System.out.println("Fail, try again");
+            return; // Zakończenie programu, jeśli obraz nie został wczytany
+        }
+
+        // Utworzenie macierzy transformacji (przekształcenia afine) o rozmiarze 2x3
+        // Mat.eye(2, 3, CvType.CV_32F) tworzy macierz jednostkową (identity matrix) o typie danych float
+        Mat translationMatrix = Mat.eye(2, 3, CvType.CV_32F);
+
+        // Ustawienie przesunięcia o 50 pikseli w prawo
+        translationMatrix.put(0, 2, 50); // Pierwszy wiersz, trzecia kolumna
+
+        // Ustawienie przesunięcia o 30 pikseli w dół
+        translationMatrix.put(1, 2, 30); // Drugi wiersz, trzecia kolumna
+
+        // Utworzenie nowego obiektu Mat do przechowywania przesuniętego obrazu
+        Mat shiftedImage = new Mat();
+
+        // Zastosowanie przekształcenia afine (przesunięcia) na oryginalnym obrazie
+        // image: wejściowy obraz
+        // shiftedImage: wynikowy obraz po przekształceniu
+        // translationMatrix: macierz przekształcenia określająca przesunięcie
+        // image.size(): rozmiar obrazu wynikowego
+        Imgproc.warpAffine(image, shiftedImage, translationMatrix, image.size());
+
+        // Wyświetlenie przesuniętego obrazu w oknie
+        HighGui.imshow("ShiftedImage", shiftedImage);
+
+        // Oczekiwanie na naciśnięcie dowolnego klawisza, aby zamknąć okno
+        HighGui.waitKey();
+
+        // Zamknięcie wszystkich otwartych okien
+        HighGui.destroyAllWindows();
+    }
+}
+
+
+@@
+@@
+@@
+@@
+
+import org.opencv.core.Core;         // Importowanie klasy Core z biblioteki OpenCV, która zawiera podstawowe funkcje
+import org.opencv.core.CvType;       // Importowanie klasy CvType do określenia typu danych dla macierzy
+import org.opencv.core.Mat;          // Importowanie klasy Mat, która reprezentuje macierz obrazu
+import org.opencv.core.Size;         // Importowanie klasy Size do określania rozmiaru obrazu
+import org.opencv.imgcodecs.Imgcodecs; // Importowanie klasy Imgcodecs do wczytywania i zapisywania obrazów
+import org.opencv.highgui.HighGui;   // Importowanie klasy HighGui do wyświetlania obrazów
+import org.opencv.imgproc.Imgproc;   // Importowanie klasy Imgproc do przetwarzania obrazów, w tym przekształceń
+
+public class Main {
+    public static void main(String[] args) {
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);  // Załadowanie natywnej biblioteki OpenCV
+        Mat image = Imgcodecs.imread("dog.jpg");  // Wczytanie obrazu z pliku "dog.jpg" do obiektu typu Mat (macierzy)
+
+        // Sprawdzenie, czy obraz został wczytany prawidłowo
+        if (image.empty()) {
+            System.out.println("Fail, try again");
+            return; // Zakończenie programu, jeśli obraz nie został wczytany
+        }
+
+        Mat FlippedImage = new Mat();
+        Core.flip(image, FlippedImage, 1);
+
+        HighGui.imshow("Dog", FlippedImage);   // Wyświetlenie
+        HighGui.waitKey();
+        HighGui.destroyAllWindows();
+    }
+}
+
+
+@@
+@@
+@@
+@@
+
+import org.opencv.core.*;
+import org.opencv.imgcodecs.Imgcodecs; // Importowanie klasy Imgcodecs do wczytywania i zapisywania obrazów
+import org.opencv.highgui.HighGui;   // Importowanie klasy HighGui do wyświetlania obrazów
+import org.opencv.imgproc.Imgproc;   // Importowanie klasy Imgproc do przetwarzania obrazów, w tym przekształceń
+
+public class Main {
+    public static void main(String[] args) {
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);  // Załadowanie biblioteki OpenCV
+        Mat image = Imgcodecs.imread("dog.jpg");  // Wczytanie "dog.jpg" do obiektu typu Mat (macierzy)
+
+        if (image.empty()) {
+            System.out.println("Fail, try again");
+            return;
+        }
+        //srodek obrazu
+        Point center = new Point(image.cols() / 2, image.rows() / 2);
+        double angle = -145; //kat obrotu pozytywny w lewo na minusie w prawo
+        double scale = 1.0; //brak zmian przy skalowaniu
+
+        Mat rotation = Imgproc.getRotationMatrix2D(center, angle,scale);
+        Size size = new Size(image.cols(), image.rows());
+
+        Mat rotatedImage = new Mat();
+        Imgproc.warpAffine(image, rotatedImage, rotation, size);
+        HighGui.imshow("Dog", rotatedImage);   // Wyświetlenie
+        HighGui.waitKey();
+        HighGui.destroyAllWindows();
+    }
+}
+
+
+@@
+@@
+@@
+ZAD 6
+@@
+import org.opencv.core.*;
+import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
+
+public class Main {
+    public static void main(String[] args) {
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);  // Załadowanie biblioteki OpenCV
+        Mat image = Imgcodecs.imread("dog.jpg");  // Wczytanie "dog.jpg" do obiektu typu Mat (macierzy)
+
+        if (image.empty()) {
+            System.out.println("Mission failed");
+            return;
+        }
+
+        // Pomniejszanie obrazu za pomocą resize
+        Mat resizedHalf = new Mat();
+        Mat resizedQuarter = new Mat();
+        Imgproc.resize(image, resizedHalf, new Size(image.cols() / 2, image.rows() / 2), 0, 0, Imgproc.INTER_LINEAR);
+        Imgproc.resize(image, resizedQuarter, new Size(image.cols() / 4, image.rows() / 4), 0, 0, Imgproc.INTER_LINEAR);
+
+        // Zapisywanie pomniejszonych obrazów za pomocą resize
+        Imgcodecs.imwrite("resized_half.jpg", resizedHalf);
+        Imgcodecs.imwrite("resized_quarter.jpg", resizedQuarter);
+
+        // Pomniejszanie obrazu za pomocą pyrDown
+        Mat pyrDownHalf = new Mat();
+        Mat pyrDownQuarter = new Mat();
+        Imgproc.pyrDown(image, pyrDownHalf, new Size(image.cols() / 2, image.rows() / 2));
+        Imgproc.pyrDown(pyrDownHalf, pyrDownQuarter, new Size(image.cols() / 4, image.rows() / 4));
+
+        // Zapisywanie pomniejszonych obrazów za pomocą pyrDown
+        Imgcodecs.imwrite("pyrdown2.jpg", pyrDownHalf);
+        Imgcodecs.imwrite("pyrdown4.jpg", pyrDownQuarter);
+
+    }
+}
+
+

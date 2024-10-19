@@ -1,0 +1,30 @@
+import org.opencv.core.Core;  // Importowanie klasy Core z biblioteki OpenCV, potrzebnej do używania funkcji OpenCV
+import org.opencv.core.Mat;   // Importowanie klasy Mat, która reprezentuje macierz (obraz)
+import org.opencv.imgcodecs.Imgcodecs; // Importowanie klasy Imgcodecs, która służy do wczytywania i zapisywania obrazów
+import org.opencv.highgui.HighGui; // Importowanie klasy HighGui do wyświetlania obrazów
+import org.opencv.imgproc.Imgproc; // Importowanie klasy Imgproc do przetwarzania obrazów
+import org.opencv.core.Point; // Importowanie klasy Point, która reprezentuje punkt w dwuwymiarowej przestrzeni
+import org.opencv.core.Scalar; // Importowanie klasy Scalar do reprezentacji kolorów
+public class zad1 {
+    public static void main(String[] args) {
+        // Załadowanie biblioteki OpenCV
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+
+        // Wczytanie obrazu z pliku do macierzy Mat
+        Mat image = Imgcodecs.imread("dog.jpg");
+
+        // Sprawdzenie, czy obraz został poprawnie wczytany
+        if (image.empty()) {
+            System.out.println("fail"); // Wyświetlenie komunikatu o błędzie, jeśli obraz nie został wczytany
+            return; // Zakończenie programu
+        }
+        // Dodanie napisu na obraz
+        Imgproc.putText(image, "Write by Pawel!", new Point(50, 50), Imgproc.FONT_HERSHEY_SIMPLEX, 3.0, new Scalar(20, 255, 255), 2);
+        // Wyświetlenie obrazu w oknie
+        HighGui.imshow("Picture", image);
+        // Oczekiwanie na naciśnięcie dowolnego klawisza
+        HighGui.waitKey();
+        // Zamknięcie wszystkich otwartych okien
+        HighGui.destroyAllWindows();
+    }
+}
