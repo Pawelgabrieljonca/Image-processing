@@ -1,3 +1,17 @@
+
+Opis efektów działania metod:
+Kontury przez dylatację:
+Kontury są uzyskiwane jako różnica między powiększonym obrazem a oryginałem. Jest to technika podkreślająca zewnętrzne krawędzie obiektów, co prowadzi do ich zaznaczenia w formie obwódki.
+Kontury przez erozję:
+Kontury są uzyskane jako różnica między oryginałem a obrazem skurczonym przez erozję. Efekt skupia się na wewnętrznych krawędziach obiektów, ukazując kontury od środka.
+Kontury przez różnicę między dylatacją a erozją:
+Różnica między powiększonym a skurczonym obrazem daje efekt pełnych konturów, które obejmują zarówno zewnętrzne, jak i wewnętrzne krawędzie obiektów. Jest to metoda często stosowana do uzyskania pełnego konturu obiektów.
+Każda z metod generuje nieco inny efekt, co może być przydatne w zależności od zastosowania.
+
+
+
+
+
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
