@@ -1,0 +1,36 @@
+import org.opencv.core.*;
+import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
+
+public class Main {
+    static { System.loadLibrary(Core.NATIVE_LIBRARY_NAME); }
+
+    public static void main(String[] args) {
+        Mat img = Imgcodecs.imread("women.png", Imgcodecs.IMREAD_GRAYSCALE);
+
+        if (img.empty()) {
+            System.out.println("Failed to load image.");
+            return;
+        }
+
+        // Segmentacja poprzez binaryzację obrazu (progowanie)
+        Mat binaryImg = new Mat();
+        Imgproc.threshold(img, binaryImg, 127, 255, Imgproc.THRESH_BINARY);
+
+        // Definicje rozmiarów i kształtów elementów strukturalnych
+        Size kernelSize = new Size(5, 5);
+        int shape = Imgproc.MORPH_RECT;
+
+        // Tworzenie elementu strukturalnego
+        Mat element = Imgproc.getStructuringElement(shape, kernelSize);
+
+        // Wykonanie dylatacji
+        Mat dilatedImg = new Mat();
+        Imgproc.dilate(binaryImg, dilatedImg, element);
+
+        // Zapisanie wyniku do pliku
+        String outputFilename = "dilated_image.png";
+        Imgcodecs.imwrite(outputFilename, dilatedImg);
+        System.out.println("Zapisano: " + outputFilename);
+    }
+}

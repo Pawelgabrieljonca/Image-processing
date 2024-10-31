@@ -1,0 +1,44 @@
+import org.opencv.core.*;
+import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
+public class Main {
+    static { System.loadLibrary(Core.NATIVE_LIBRARY_NAME); }
+
+    public static void main(String[] args) {
+        Mat img = Imgcodecs.imread("women.png", Imgcodecs.IMREAD_GRAYSCALE);
+
+        if (img.empty()) {
+            System.out.println("Failed to load image.");
+            return;
+        }
+
+        // Segmentacja poprzez binaryzację
+        Mat binaryImg = new Mat();
+        Imgproc.threshold(img, binaryImg, 127, 255, Imgproc.THRESH_BINARY);
+
+        // Definicje rozmiaru i kształtu elementu strukturalnego
+        Size kernelSize = new Size(5, 5);
+        int shape = Imgproc.MORPH_RECT;
+
+        // Tworzenie elementu strukturalnego
+        Mat element = Imgproc.getStructuringElement(shape, kernelSize);
+
+        // Operacja otwarcia (erosion + dilation)
+        Mat openedImg = new Mat();
+        Imgproc.morphologyEx(binaryImg, openedImg, Imgproc.MORPH_OPEN, element);
+
+        // Zapis wyniku operacji otwarcia
+        String openedFilename = "opened_image.png";
+        Imgcodecs.imwrite(openedFilename, openedImg);
+        System.out.println("Zapisano: " + openedFilename);
+
+        // Operacja domknięcia (dilation + erosion)
+        Mat closedImg = new Mat();
+        Imgproc.morphologyEx(binaryImg, closedImg, Imgproc.MORPH_CLOSE, element);
+
+        // Zapis wyniku operacji domknięcia
+        String closedFilename = "closed_image.png";
+        Imgcodecs.imwrite(closedFilename, closedImg);
+        System.out.println("Zapisano: " + closedFilename);
+    }
+}
