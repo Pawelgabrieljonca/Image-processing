@@ -4,7 +4,7 @@ import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.highgui.HighGui;
-
+//Klasa Gauss zawiera całą logikę przetwarzania obrazu
 public class Gauss {
 
     public static void processImage() {
